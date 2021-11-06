@@ -51,8 +51,8 @@ open in browser `localhost:8000/admin` and log in
 * change allowed host in .env.prod
 * change <project_name> in ./nginx/nginx.conf
 * change <project_name> in ./docker-compose.prod.yml
-* `sudo docker-compose -f docker-compose.prod.yml up`
-in new terminal:
+* `sudo docker-compose -f docker-compose.prod.yml up`  
+in new terminal:  
 `sudo docker exec -it <project_name>_web_1 bash`  
 `# python manage.py migrate`  
 `# python manage.py createsuperuser`  
