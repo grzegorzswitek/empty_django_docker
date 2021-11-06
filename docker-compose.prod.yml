@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  web:
+    build: ./app
+    command: gunicorn bx_panel.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
+      - media_volume:/usr/src/app/mediafiles
+    network:
+      - frontend_network
+      - backend_network
+    expose:
+      - 8000
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - db
+      
+  db:
+    image: postgres:14
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.prod.db
+    network:
+      - backend_network
+    ports:
+      - 5432:5432
+      
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
+      - media_volume:/usr/src/app/mediafiles
+    network:
+      - frontend_network
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
+      
+volumes:
+  db_data:
+  static_volume:
+  media_volume:
+  
+network:
+  frontend_network:
+  backend_network:
