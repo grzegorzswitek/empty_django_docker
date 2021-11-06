@@ -2,7 +2,8 @@
 
 1. Clone repository
 * `git clone https://github.com/grzegorzswitek/empty_django_docker.git`
-* `cd empty_django_docker`
+* `mv empty_django_docker/ <project_name>/`
+* `cd <project_name>`
 2. Run development container
 * `sudo docker-compose -f docker-compose.dev.yml build web`
 * `sudo docker-compose -f docker-compose.dev.yml run web django-admin startproject <project_name> .`
@@ -37,17 +38,24 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
 ```
-
 5. Add superuser
 in new terminal:
-`sudo docker exec -it <project_name>_web_1 bash`
-`# python manage.py migrate`
-`# python manage.py createsuperuser`
-`# (...)`
-`# exit`
-open in browser `localhost:8000/admin` and log in
-
+`sudo docker exec -it <project_name>_web_1 bash`  
+`# python manage.py migrate`  
+`# python manage.py createsuperuser`  
+`# (...)`  
+`# exit`  
+open in browser `localhost:8000/admin` and log in  
 6. Production
+* `sudo docker-compose -f docker-compose.dev.yml down`
 * change allowed host in .env.prod
 * change <project_name> in ./nginx/nginx.conf
+* change <project_name> in ./docker-compose.prod.yml
 * `sudo docker-compose -f docker-compose.prod.yml up`
+in new terminal:
+`sudo docker exec -it <project_name>_web_1 bash`  
+`# python manage.py migrate`  
+`# python manage.py createsuperuser`  
+`# (...)`  
+`# python manage.py collectstatic`  
+`# exit`  
