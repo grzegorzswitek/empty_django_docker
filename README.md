@@ -59,3 +59,4 @@ in new terminal:
 `# (...)`  
 `# python manage.py collectstatic`  
 `# exit`  
+open in browser localhost:1337/admin and log in  
